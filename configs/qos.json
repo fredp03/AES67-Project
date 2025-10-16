@@ -1,0 +1,57 @@
+{
+  "profiles": {
+    "low-latency": {
+      "description": "Optimized for Mac-to-Mac with < 4ms round-trip",
+      "io_buffer_frames": 32,
+      "packet_time_us": 250,
+      "jitter_buffer_packets_min": 2,
+      "jitter_buffer_packets_max": 4,
+      "ptp_domain": 0,
+      "ptp_sync_interval_log2": 0,
+      "rtp_dscp": 46,
+      "ptp_dscp": 56
+    },
+    "interop": {
+      "description": "AES67-compliant for multi-vendor networks",
+      "io_buffer_frames": 64,
+      "packet_time_us": 1000,
+      "jitter_buffer_packets_min": 1,
+      "jitter_buffer_packets_max": 2,
+      "ptp_domain": 0,
+      "ptp_sync_interval_log2": 0,
+      "rtp_dscp": 46,
+      "ptp_dscp": 56
+    },
+    "broadcast": {
+      "description": "Large buffers for WAN/broadcast environments",
+      "io_buffer_frames": 128,
+      "packet_time_us": 1000,
+      "jitter_buffer_packets_min": 4,
+      "jitter_buffer_packets_max": 8,
+      "ptp_domain": 0,
+      "ptp_sync_interval_log2": -1,
+      "rtp_dscp": 46,
+      "ptp_dscp": 56
+    }
+  },
+  "dscp_presets": {
+    "EF": 46,
+    "AF41": 34,
+    "CS5": 40,
+    "CS6": 48,
+    "CS7": 56
+  },
+  "network": {
+    "udp_recv_buffer_size": 2097152,
+    "udp_send_buffer_size": 1048576,
+    "enable_timestamping": true,
+    "multicast_ttl": 32,
+    "multicast_loop": false
+  },
+  "sap": {
+    "enabled": true,
+    "interval_seconds": 30,
+    "address": "239.255.255.255",
+    "port": 9875
+  }
+}
