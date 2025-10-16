@@ -58,9 +58,33 @@ make -j"$NCPUS"
 echo "✓ Tools built successfully"
 echo ""
 
+# Build Tests
+echo "-------------------------------------------------------------------"
+echo "[4/5] Building Unit Tests"
+echo "-------------------------------------------------------------------"
+cd "$PROJECT_ROOT/tests/unit"
+mkdir -p build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j$(sysctl -n hw.ncpu)
+echo "✓ Tests built successfully"
+echo ""
+
+# Run Tests
+echo "-------------------------------------------------------------------"
+echo "[5/6] Running Unit Tests"
+echo "-------------------------------------------------------------------"
+if ./aes67_tests; then
+    echo "✓ All tests passed"
+else
+    echo "✗ Some tests failed"
+    exit 1
+fi
+echo ""
+
 # Build UI
 echo "-------------------------------------------------------------------"
-echo "[4/4] Building UI (Menu Bar App)"
+echo "[6/6] Building UI (Menu Bar App)"
 echo "-------------------------------------------------------------------"
 cd "$PROJECT_ROOT/ui"
 if [ -f "Aes67VSC.xcodeproj/project.pbxproj" ]; then
