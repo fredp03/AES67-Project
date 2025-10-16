@@ -1573,6 +1573,7 @@ CMakeFiles/aes67_engine.dir/src/NetworkEngine.cpp.o: /Users/fredparsons/Document
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/this_thread.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/thread.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__threading_support \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__tree \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/make_tuple_types.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/pair_like.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/sfinae_helpers.h \
@@ -1782,6 +1783,7 @@ CMakeFiles/aes67_engine.dir/src/NetworkEngine.cpp.o: /Users/fredparsons/Document
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/limits \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/locale \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/locale.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/map \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/math.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/memory \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/mutex \
@@ -2040,7 +2042,8 @@ CMakeFiles/aes67_engine.dir/src/NetworkEngine.cpp.o: /Users/fredparsons/Document
   /Users/fredparsons/Documents/Side\ Projects/AES67\ Project/engine/include/PTPTypes.h \
   /Users/fredparsons/Documents/Side\ Projects/AES67\ Project/engine/include/RTPPacketizer.h \
   /Users/fredparsons/Documents/Side\ Projects/AES67\ Project/engine/include/RTPTypes.h \
-  /Users/fredparsons/Documents/Side\ Projects/AES67\ Project/engine/include/SAPAnnouncer.h
+  /Users/fredparsons/Documents/Side\ Projects/AES67\ Project/engine/include/SAPAnnouncer.h \
+  /Users/fredparsons/Documents/Side\ Projects/AES67\ Project/engine/include/SDPParser.h
 
 CMakeFiles/aes67_engine.dir/src/PTPClient.cpp.o: /Users/fredparsons/Documents/Side\ Projects/AES67\ Project/engine/src/PTPClient.cpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/Availability.h \

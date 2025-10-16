@@ -8,9 +8,12 @@
 #include "PTPClient.h"
 #include "JitterBuffer.h"
 #include "SAPAnnouncer.h"
+#include "SDPParser.h"
 #include <memory>
 #include <thread>
 #include <atomic>
+#include <map>
+#include <mutex>
 
 namespace AES67 {
 
@@ -33,11 +36,18 @@ public:
     AudioRingBuffer* GetOutputRingBuffer(uint32_t streamIdx) override;
     void NotifyIOCycle(uint64_t hostTime, uint64_t sampleTime) override;
     
+    // Stream discovery API
+    std::vector<std::string> GetDiscoveredStreamNames() const;
+    bool GetDiscoveredStream(const std::string& name, SDPSession& outSession) const;
+    
 private:
     void RTPReceiveThread(uint32_t streamIdx);
     void RTPTransmitThread(uint32_t streamIdx);
     void JitterBufferPlayoutThread(uint32_t streamIdx);
+    void SAPDiscoveryThread();
     void PTPThread();
+    
+    void OnStreamDiscovered(const std::string& streamName, const SDPSession& sdp);
     
     EngineCallbacks callbacks_;
     std::unique_ptr<PTPClient> ptpClient_;
@@ -54,9 +64,14 @@ private:
     std::array<std::thread, 8> rxThreads_;
     std::array<std::thread, 8> txThreads_;
     std::array<std::thread, 8> playoutThreads_;
+    std::thread sapDiscoveryThread_;
     std::thread ptpThread_;
     
     std::atomic<bool> running_{false};
+    
+    // Discovered streams
+    std::map<std::string, SDPSession> discoveredStreams_;
+    mutable std::mutex discoveryMutex_;
     
     // Configuration
     struct Config {

@@ -60,6 +60,9 @@ bool NetworkEngine::Start() {
     
     running_ = true;
     
+    // Start SAP discovery listener
+    sapDiscoveryThread_ = std::thread(&NetworkEngine::SAPDiscoveryThread, this);
+    
     // Start RTP threads (one per stream)
     for (uint32_t i = 0; i < 8; ++i) {
         rxThreads_[i] = std::thread(&NetworkEngine::RTPReceiveThread, this, i);
@@ -98,6 +101,10 @@ void NetworkEngine::Stop() {
     sapAnnouncer_->Stop();
     
     // Join all threads
+    if (sapDiscoveryThread_.joinable()) {
+        sapDiscoveryThread_.join();
+    }
+    
     for (auto& thread : rxThreads_) {
         if (thread.joinable()) {
             thread.join();
@@ -166,6 +173,30 @@ void NetworkEngine::NotifyIOCycle(uint64_t hostTime, uint64_t sampleTime) {
     (void)hostTime;
     (void)sampleTime;
     // TODO: Use for precise timestamp alignment
+}
+
+std::vector<std::string> NetworkEngine::GetDiscoveredStreamNames() const {
+    std::lock_guard<std::mutex> lock(discoveryMutex_);
+    std::vector<std::string> names;
+    names.reserve(discoveredStreams_.size());
+    
+    for (const auto& pair : discoveredStreams_) {
+        names.push_back(pair.first);
+    }
+    
+    return names;
+}
+
+bool NetworkEngine::GetDiscoveredStream(const std::string& name, SDPSession& outSession) const {
+    std::lock_guard<std::mutex> lock(discoveryMutex_);
+    auto it = discoveredStreams_.find(name);
+    
+    if (it != discoveredStreams_.end()) {
+        outSession = it->second;
+        return true;
+    }
+    
+    return false;
 }
 
 void NetworkEngine::RTPReceiveThread(uint32_t streamIdx) {
@@ -318,6 +349,106 @@ void NetworkEngine::RTPTransmitThread(uint32_t streamIdx) {
     }
     
     close(sock);
+}
+
+void NetworkEngine::SAPDiscoveryThread() {
+    // Create UDP socket for SAP listening
+    const int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock < 0) return;
+    
+    // Allow address reuse
+    int reuse = 1;
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
+    #ifdef SO_REUSEPORT
+    setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, &reuse, sizeof(reuse));
+    #endif
+    
+    // Bind to SAP port 9875
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(9875);
+    
+    if (bind(sock, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) < 0) {
+        close(sock);
+        return;
+    }
+    
+    // Join SAP multicast group (239.255.255.255)
+    ip_mreq mreq{};
+    inet_pton(AF_INET, "239.255.255.255", &mreq.imr_multiaddr);
+    mreq.imr_interface.s_addr = INADDR_ANY;
+    setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
+    
+    uint8_t buffer[2048];
+    
+    while (running_) {
+        // Set receive timeout so we can check running_ periodically
+        timeval timeout{};
+        timeout.tv_sec = 1;
+        timeout.tv_usec = 0;
+        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+        
+        const ssize_t bytes = recv(sock, buffer, sizeof(buffer), 0);
+        if (bytes <= 0) continue;
+        
+        // Parse SAP header (minimum 8 bytes)
+        if (bytes < 8) continue;
+        
+        const uint8_t version = (buffer[0] >> 5) & 0x7;
+        const bool isAnnouncement = (buffer[0] & 0x04) == 0; // A bit (deletion if set)
+        
+        if (version != 1 || !isAnnouncement) continue;
+        
+        // Skip SAP header to get SDP payload
+        // SAP header: V(3) A(1) R(1) T(1) E(1) C(1) + auth_len(1) + msg_id_hash(2) + origin(4) [+ auth_data]
+        size_t sdpOffset = 8; // Minimum SAP header size
+        
+        const uint8_t authLen = buffer[1];
+        sdpOffset += authLen * 4; // Auth data is in 32-bit words
+        
+        if (sdpOffset >= static_cast<size_t>(bytes)) continue;
+        
+        // Extract SDP
+        const std::string sdp(reinterpret_cast<const char*>(buffer + sdpOffset), 
+                             bytes - sdpOffset);
+        
+        try {
+            // Parse SDP
+            const SDPSession session = SDPParser::Parse(sdp);
+            
+            // Create unique stream name from origin
+            const std::string streamName = session.sessionName.empty() 
+                ? session.origin 
+                : session.sessionName;
+            
+            // Notify about discovered stream
+            OnStreamDiscovered(streamName, session);
+            
+        } catch (...) {
+            // Ignore malformed SDP
+        }
+    }
+    
+    close(sock);
+}
+
+void NetworkEngine::OnStreamDiscovered(const std::string& streamName, const SDPSession& sdp) {
+    std::lock_guard<std::mutex> lock(discoveryMutex_);
+    
+    // Check if this is a new stream or an update
+    auto it = discoveredStreams_.find(streamName);
+    const bool isNew = (it == discoveredStreams_.end());
+    
+    // Store/update stream info
+    discoveredStreams_[streamName] = sdp;
+    
+    // Log discovery (in production, this could trigger UI updates or auto-subscription)
+    if (isNew) {
+        // New stream discovered
+        // TODO: Notify callback or log
+        // For now, streams are stored and can be queried via a future API
+    }
 }
 
 } // namespace AES67

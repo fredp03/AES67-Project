@@ -63,11 +63,11 @@ CMAKE_BINARY_DIR = "/Users/fredparsons/Documents/Side Projects/AES67 Project/too
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all:
+all: CMakeFiles/aes67-list.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen:
+codegen: CMakeFiles/aes67-list.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -75,8 +75,40 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean:
+clean: CMakeFiles/aes67-list.dir/clean
 .PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/aes67-list.dir
+
+# All Build rule for target.
+CMakeFiles/aes67-list.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-list.dir/build.make CMakeFiles/aes67-list.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-list.dir/build.make CMakeFiles/aes67-list.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" --progress-num=1,2 "Built target aes67-list"
+.PHONY : CMakeFiles/aes67-list.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/aes67-list.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/aes67-list.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" 0
+.PHONY : CMakeFiles/aes67-list.dir/rule
+
+# Convenience name for target.
+aes67-list: CMakeFiles/aes67-list.dir/rule
+.PHONY : aes67-list
+
+# codegen rule for target.
+CMakeFiles/aes67-list.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-list.dir/build.make CMakeFiles/aes67-list.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" --progress-num=1,2 "Finished codegen for target aes67-list"
+.PHONY : CMakeFiles/aes67-list.dir/codegen
+
+# clean rule for target.
+CMakeFiles/aes67-list.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-list.dir/build.make CMakeFiles/aes67-list.dir/clean
+.PHONY : CMakeFiles/aes67-list.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
