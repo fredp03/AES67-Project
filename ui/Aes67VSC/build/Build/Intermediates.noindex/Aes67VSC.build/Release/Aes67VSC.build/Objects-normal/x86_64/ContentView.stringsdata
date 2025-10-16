@@ -1,0 +1,128 @@
+{
+  "source": "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/ContentView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 18
+        }
+      },
+      {
+        "comment": "",
+        "key": "Streams",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 19
+        }
+      },
+      {
+        "comment": "",
+        "key": "Status",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 20
+        }
+      },
+      {
+        "comment": "",
+        "key": "Settings",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 21
+        }
+      },
+      {
+        "comment": "",
+        "key": "AES67 Virtual Soundcard",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 58
+        }
+      },
+      {
+        "comment": "",
+        "key": "Network Interface",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 174
+        }
+      },
+      {
+        "comment": "",
+        "key": "Interface",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 177
+        }
+      },
+      {
+        "comment": "",
+        "key": "Engine Control",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 185
+        }
+      },
+      {
+        "comment": "",
+        "key": "Stop Engine",
+        "location": {
+          "startingColumn": 62,
+          "startingLine": 188
+        }
+      },
+      {
+        "comment": "",
+        "key": "Start Engine",
+        "location": {
+          "startingColumn": 78,
+          "startingLine": 188
+        }
+      },
+      {
+        "comment": "",
+        "key": "About",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 200
+        }
+      },
+      {
+        "comment": "",
+        "key": "AES67 Virtual Soundcard v1.0",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 203
+        }
+      },
+      {
+        "comment": "",
+        "key": "64 channels @ 48 kHz, 24-bit",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 205
+        }
+      },
+      {
+        "comment": "",
+        "key": "© 2025 AES67 VSC",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 220
+        }
+      },
+      {
+        "comment": "",
+        "key": "Quit",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 226
+        }
+      }
+    ]
+  },
+  "version": 1
+}

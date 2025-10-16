@@ -86,16 +86,22 @@ echo ""
 echo "-------------------------------------------------------------------"
 echo "[6/6] Building UI (Menu Bar App)"
 echo "-------------------------------------------------------------------"
-cd "$PROJECT_ROOT/ui"
+cd "$PROJECT_ROOT/ui/Aes67VSC"
 if [ -f "Aes67VSC.xcodeproj/project.pbxproj" ]; then
     xcodebuild -project Aes67VSC.xcodeproj \
                -scheme Aes67VSC \
                -configuration Release \
                -derivedDataPath build \
-               ONLY_ACTIVE_ARCH=NO
-    echo "✓ UI built successfully"
+               ONLY_ACTIVE_ARCH=NO 2>&1 | grep -E "(error|warning|succeeded|failed|✓)" || true
+    
+    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+        echo "✓ UI built successfully"
+        echo "  App location: ui/Aes67VSC/build/Build/Products/Release/Aes67VSC.app"
+    else
+        echo "⚠ UI build had issues (check output above)"
+    fi
 else
-    echo "⚠ UI project not yet created (will be generated in next step)"
+    echo "⚠ UI project not found"
 fi
 echo ""
 

@@ -1,0 +1,40 @@
+{
+  "" : {
+    "const-values" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/Aes67VSC-master.swiftconstvalues",
+    "dependencies" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/Aes67VSC-master.d",
+    "diagnostics" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/Aes67VSC-master.dia",
+    "emit-module-dependencies" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/Aes67VSC-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/Aes67VSC-master-emit-module.dia",
+    "swift-dependencies" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/Aes67VSC-master.swiftdeps"
+  },
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/Aes67VSCApp.swift" : {
+    "index-unit-output-path" : "/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/Aes67VSCApp.o",
+    "llvm-bc" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/Aes67VSCApp.bc",
+    "object" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/Aes67VSCApp.o"
+  },
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/ContentView.swift" : {
+    "index-unit-output-path" : "/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/ContentView.o"
+  },
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/EngineInterface.swift" : {
+    "index-unit-output-path" : "/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/EngineInterface.o",
+    "llvm-bc" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/EngineInterface.bc",
+    "object" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/EngineInterface.o"
+  },
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/StatusBarView.swift" : {
+    "index-unit-output-path" : "/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/StatusBarView.o",
+    "llvm-bc" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/StatusBarView.bc",
+    "object" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/StatusBarView.o"
+  },
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/StreamListView.swift" : {
+    "index-unit-output-path" : "/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/StreamListView.o",
+    "llvm-bc" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/StreamListView.bc",
+    "object" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/StreamListView.o"
+  },
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  }
+}

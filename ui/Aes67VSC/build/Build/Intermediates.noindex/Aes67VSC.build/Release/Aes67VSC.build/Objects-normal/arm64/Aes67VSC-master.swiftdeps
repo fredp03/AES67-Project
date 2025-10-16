@@ -1,0 +1,12 @@
+version: "Apple Swift version 6.0.3 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)"
+options: "dd2b0a40f57fa0ec99fe00544a10681424491843e0f135afef6fda3b74e524ec"
+build_start_time: [1760654140, 124401000]
+build_end_time: [1760654146, 351314000]
+inputs:
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/Aes67VSCApp.swift": [1760654073, 728349730]
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/ContentView.swift": [1760654075, 766373913]
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/EngineInterface.swift": [1760654081, 889448076]
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/StatusBarView.swift": [1760654079, 834562566]
+  "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/StreamListView.swift": [1760654077, 801376739]
+  ? "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/Aes67VSC.build/Release/Aes67VSC.build/DerivedSources/GeneratedAssetSymbols.swift"
+  : [1760654138, 505529268]

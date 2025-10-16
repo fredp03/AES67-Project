@@ -1,0 +1,64 @@
+{
+  "buildCommand" : {
+    "command" : "build",
+    "skipDependencies" : false,
+    "style" : "buildOnly"
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "dd60aa682b19ed00b0ade43dee9c346fe1ffe4445dcb07b810fa3c0259fb5f55"
+    }
+  ],
+  "containerPath" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC.xcodeproj",
+  "continueBuildingAfterErrors" : false,
+  "dependencyScope" : "workspace",
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "macosx",
+      "sdk" : "macosx15.2",
+      "sdkVariant" : "macos",
+      "supportedArchitectures" : [
+        "arm64e",
+        "arm64",
+        "x86_64"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Products",
+      "derivedDataPath" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build",
+      "indexDataStoreFolderPath" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Index.noindex/PrecompiledHeaders",
+      "pchPath" : "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/build/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Release",
+    "overrides" : {
+      "commandLine" : {
+        "table" : {
+
+        }
+      },
+      "synthesized" : {
+        "table" : {
+          "ACTION" : "build",
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "YES",
+          "ONLY_ACTIVE_ARCH" : "YES"
+        }
+      }
+    }
+  },
+  "schemeCommand" : "launch",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

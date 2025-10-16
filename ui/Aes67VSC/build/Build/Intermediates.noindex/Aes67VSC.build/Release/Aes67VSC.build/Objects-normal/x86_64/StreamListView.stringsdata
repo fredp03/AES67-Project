@@ -1,0 +1,72 @@
+{
+  "source": "/Users/fredparsons/Documents/Side Projects/AES67 Project/ui/Aes67VSC/Aes67VSC/StreamListView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Discovered Streams",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 14
+        }
+      },
+      {
+        "comment": "",
+        "key": "No streams discovered",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 37
+        }
+      },
+      {
+        "comment": "",
+        "key": "Waiting for SAP announcements...",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 40
+        }
+      },
+      {
+        "comment": "",
+        "key": "Subscribe",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "Copy Multicast Address",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 57
+        }
+      },
+      {
+        "comment": "",
+        "key": "Subscribed Streams",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 73
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld ch",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 114
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld kHz",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 124
+        }
+      }
+    ]
+  },
+  "version": 1
+}
