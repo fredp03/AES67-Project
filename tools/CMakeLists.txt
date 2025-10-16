@@ -31,5 +31,12 @@ target_include_directories(aes67-stream PRIVATE
     ${CMAKE_SOURCE_DIR}/../driver/include)
 target_link_libraries(aes67-stream aes67_engine)
 
-message(STATUS "Built aes67-list, aes67-subscribe, aes67-stream tools")
+# aes67-monitor: Web-based audio monitoring tool
+add_executable(aes67-monitor aes67-monitor.cpp)
+target_include_directories(aes67-monitor PRIVATE 
+    ${CMAKE_SOURCE_DIR}/../engine/include
+    ${CMAKE_SOURCE_DIR}/../driver/include)
+target_link_libraries(aes67-monitor aes67_engine)
+
+message(STATUS "Built aes67-list, aes67-subscribe, aes67-stream, aes67-monitor tools")
 

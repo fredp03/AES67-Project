@@ -155,6 +155,19 @@ aes67-stream/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-stream.dir/build.make CMakeFiles/aes67-stream.dir/build
 .PHONY : aes67-stream/fast
 
+#=============================================================================
+# Target rules for targets named aes67-monitor
+
+# Build rule for target.
+aes67-monitor: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 aes67-monitor
+.PHONY : aes67-monitor
+
+# fast build rule for target.
+aes67-monitor/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-monitor.dir/build.make CMakeFiles/aes67-monitor.dir/build
+.PHONY : aes67-monitor/fast
+
 aes67-list.o: aes67-list.cpp.o
 .PHONY : aes67-list.o
 
@@ -178,6 +191,30 @@ aes67-list.s: aes67-list.cpp.s
 aes67-list.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-list.dir/build.make CMakeFiles/aes67-list.dir/aes67-list.cpp.s
 .PHONY : aes67-list.cpp.s
+
+aes67-monitor.o: aes67-monitor.cpp.o
+.PHONY : aes67-monitor.o
+
+# target to build an object file
+aes67-monitor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-monitor.dir/build.make CMakeFiles/aes67-monitor.dir/aes67-monitor.cpp.o
+.PHONY : aes67-monitor.cpp.o
+
+aes67-monitor.i: aes67-monitor.cpp.i
+.PHONY : aes67-monitor.i
+
+# target to preprocess a source file
+aes67-monitor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-monitor.dir/build.make CMakeFiles/aes67-monitor.dir/aes67-monitor.cpp.i
+.PHONY : aes67-monitor.cpp.i
+
+aes67-monitor.s: aes67-monitor.cpp.s
+.PHONY : aes67-monitor.s
+
+# target to generate assembly for a file
+aes67-monitor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-monitor.dir/build.make CMakeFiles/aes67-monitor.dir/aes67-monitor.cpp.s
+.PHONY : aes67-monitor.cpp.s
 
 aes67-stream.o: aes67-stream.cpp.o
 .PHONY : aes67-stream.o
@@ -236,11 +273,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... aes67-list"
+	@echo "... aes67-monitor"
 	@echo "... aes67-stream"
 	@echo "... aes67-subscribe"
 	@echo "... aes67-list.o"
 	@echo "... aes67-list.i"
 	@echo "... aes67-list.s"
+	@echo "... aes67-monitor.o"
+	@echo "... aes67-monitor.i"
+	@echo "... aes67-monitor.s"
 	@echo "... aes67-stream.o"
 	@echo "... aes67-stream.i"
 	@echo "... aes67-stream.s"

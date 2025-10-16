@@ -17,7 +17,7 @@ cd "/Users/fredparsons/Documents/Side Projects/AES67 Project"
 This builds:
 1. Core Audio driver plugin (AES67VSC.driver)
 2. Network engine library (libaes67_engine.a)
-3. CLI tools (aes67-list)
+3. CLI tools (aes67-list, aes67-subscribe, aes67-stream, aes67-monitor)
 4. Unit tests (23 tests)
 5. SwiftUI menu bar app (Aes67VSC.app)
 
@@ -55,9 +55,12 @@ AES67 Project/
 │   └── unit/           # Unit tests (23 tests, ~560 LOC)
 │       └── build/      # → aes67_tests
 │
-├── tools/              # CLI utilities
-│   ├── aes67-list.cpp # Stream discovery tool
-│   └── build/          # → aes67-list
+├── tools/              # CLI utilities (4 tools, ~1,300 LOC)
+│   ├── aes67-list.cpp      # Stream discovery tool
+│   ├── aes67-subscribe.cpp # Stream monitoring
+│   ├── aes67-stream.cpp    # File transmission
+│   ├── aes67-monitor.cpp   # Web-based visualization
+│   └── build/              # → executables
 │
 ├── ui/
 │   └── Aes67VSC/      # SwiftUI menu bar app (~650 LOC)
@@ -105,8 +108,16 @@ AES67 Project/
 - Stream subscription controls
 - Settings and configuration
 
-**CLI Tools**
-- `aes67-list`: Discover and list AES67 streams
+**CLI Tools (4 tools)**
+- `aes67-list`: Discover and list AES67 streams via SAP
+- `aes67-subscribe`: Manual stream subscription and monitoring (~250 LOC)
+- `aes67-stream`: Transmit audio files as AES67 streams (~400 LOC)
+- `aes67-monitor`: **NEW!** Web-based real-time audio visualization (~650 LOC)
+  - Browser interface with level meters
+  - PTP status display
+  - Stream discovery list
+  - JSON API for scripting
+  - See `QUICK_START_DAW.md` for usage
 
 ### ⏸ In Progress
 
@@ -116,10 +127,6 @@ AES67 Project/
 - Real-time status updates from engine
 
 ### 📋 Planned
-
-**Additional CLI Tools**
-- `aes67-subscribe`: Manual stream subscription
-- `aes67-stream`: Transmit audio files as AES67
 
 **Integration Testing**
 - Two-Mac audio loopback test
