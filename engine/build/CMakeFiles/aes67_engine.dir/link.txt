@@ -1,0 +1,2 @@
+/usr/bin/ar qc libaes67_engine.a CMakeFiles/aes67_engine.dir/src/NetworkEngine.cpp.o CMakeFiles/aes67_engine.dir/src/RTPPacketizer.cpp.o CMakeFiles/aes67_engine.dir/src/PTPClient.cpp.o CMakeFiles/aes67_engine.dir/src/JitterBuffer.cpp.o CMakeFiles/aes67_engine.dir/src/SAPAnnouncer.cpp.o CMakeFiles/aes67_engine.dir/src/SDPParser.cpp.o
+/usr/bin/ranlib libaes67_engine.a

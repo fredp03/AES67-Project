@@ -48,16 +48,15 @@ OSStatus PlugIn::Teardown() {
     return kAudioHardwareNoError;
 }
 
-OSStatus PlugIn::HasProperty(
+Boolean PlugIn::HasProperty(
     AudioObjectID objectID,
-    const AudioObjectPropertyAddress* address,
-    Boolean* outHasProperty) const
+    const AudioObjectPropertyAddress* address) const
 {
-    if (!address || !outHasProperty) {
-        return kAudioHardwareIllegalOperationError;
+    if (!address) {
+        return false;
     }
     
-    *outHasProperty = false;
+    Boolean hasProperty = false;
     
     switch (objectID) {
         case kObjectID_PlugIn:
@@ -71,31 +70,31 @@ OSStatus PlugIn::HasProperty(
                 case kAudioPlugInPropertyDeviceList:
                 case kAudioPlugInPropertyTranslateUIDToDevice:
                 case kAudioPlugInPropertyResourceBundle:
-                    *outHasProperty = true;
+                    hasProperty = true;
                     break;
             }
             break;
             
         case kObjectID_Device:
             if (g_device) {
-                *outHasProperty = g_device->HasProperty(address);
+                hasProperty = g_device->HasProperty(address);
             }
             break;
             
         case kObjectID_InputStream:
             if (g_device && g_device->GetInputStream()) {
-                *outHasProperty = g_device->GetInputStream()->HasProperty(address);
+                hasProperty = g_device->GetInputStream()->HasProperty(address);
             }
             break;
             
         case kObjectID_OutputStream:
             if (g_device && g_device->GetOutputStream()) {
-                *outHasProperty = g_device->GetOutputStream()->HasProperty(address);
+                hasProperty = g_device->GetOutputStream()->HasProperty(address);
             }
             break;
     }
     
-    return kAudioHardwareNoError;
+    return hasProperty;
 }
 
 OSStatus PlugIn::IsPropertySettable(
@@ -230,7 +229,7 @@ OSStatus PlugIn::GetPropertyData(
                     
                 case kAudioObjectPropertyOwner:
                     if (inDataSize >= sizeof(AudioObjectID)) {
-                        *static_cast<AudioObjectID*>(outData) = kAudioObjectSystemObject;
+                        *static_cast<AudioObjectID*>(outData) = kAudioObjectPlugInObject;
                         *outDataSize = sizeof(AudioObjectID);
                         return kAudioHardwareNoError;
                     }
@@ -587,16 +586,15 @@ OSStatus AES67_PlugIn_AbortDeviceConfigurationChange(
 #define DELEGATE_TO_PLUGIN(method, ...) \
     return PlugIn::Instance().method(__VA_ARGS__)
 
-OSStatus AES67_PlugIn_HasProperty(
+Boolean AES67_PlugIn_HasProperty(
     AudioServerPlugInDriverRef driver,
     AudioObjectID objectID,
     pid_t clientProcessID,
-    const AudioObjectPropertyAddress* address,
-    Boolean* outHasProperty)
+    const AudioObjectPropertyAddress* address)
 {
     (void)driver;
     (void)clientProcessID;
-    DELEGATE_TO_PLUGIN(HasProperty, objectID, address, outHasProperty);
+    DELEGATE_TO_PLUGIN(HasProperty, objectID, address);
 }
 
 OSStatus AES67_PlugIn_IsPropertySettable(

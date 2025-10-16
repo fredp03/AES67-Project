@@ -4,6 +4,7 @@
 #pragma once
 
 #include "AES67_Types.h"
+#include "AES67_Stream.h"
 #include <CoreAudio/AudioServerPlugIn.h>
 
 namespace AES67 {
@@ -18,10 +19,9 @@ public:
     OSStatus Teardown();
     
     // Object property queries
-    OSStatus HasProperty(
+    Boolean HasProperty(
         AudioObjectID objectID,
-        const AudioObjectPropertyAddress* address,
-        Boolean* outHasProperty) const;
+        const AudioObjectPropertyAddress* address) const;
     
     OSStatus IsPropertySettable(
         AudioObjectID objectID,
@@ -158,12 +158,11 @@ OSStatus AES67_PlugIn_AbortDeviceConfigurationChange(
     UInt64 changeAction,
     void* changeInfo);
 
-OSStatus AES67_PlugIn_HasProperty(
+Boolean AES67_PlugIn_HasProperty(
     AudioServerPlugInDriverRef driver,
     AudioObjectID objectID,
     pid_t clientProcessID,
-    const AudioObjectPropertyAddress* address,
-    Boolean* outHasProperty);
+    const AudioObjectPropertyAddress* address);
 
 OSStatus AES67_PlugIn_IsPropertySettable(
     AudioServerPlugInDriverRef driver,

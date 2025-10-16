@@ -73,6 +73,7 @@ set_target_properties(AES67VSC PROPERTIES
 
 # Install to HAL plug-ins directory
 install(TARGETS AES67VSC
+  LIBRARY DESTINATION /Library/Audio/Plug-Ins/HAL
   BUNDLE DESTINATION /Library/Audio/Plug-Ins/HAL
 )
 

@@ -36,6 +36,7 @@ public:
 private:
     void RTPReceiveThread(uint32_t streamIdx);
     void RTPTransmitThread(uint32_t streamIdx);
+    void JitterBufferPlayoutThread(uint32_t streamIdx);
     void PTPThread();
     
     EngineCallbacks callbacks_;
@@ -52,6 +53,7 @@ private:
     // Worker threads
     std::array<std::thread, 8> rxThreads_;
     std::array<std::thread, 8> txThreads_;
+    std::array<std::thread, 8> playoutThreads_;
     std::thread ptpThread_;
     
     std::atomic<bool> running_{false};

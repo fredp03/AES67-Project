@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <atomic>
 #include <functional>
+#include <thread>
 
 namespace AES67 {
 

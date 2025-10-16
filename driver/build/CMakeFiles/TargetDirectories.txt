@@ -1,0 +1,7 @@
+/Users/fredparsons/Documents/Side Projects/AES67 Project/driver/build/CMakeFiles/AES67VSC.dir
+/Users/fredparsons/Documents/Side Projects/AES67 Project/driver/build/CMakeFiles/edit_cache.dir
+/Users/fredparsons/Documents/Side Projects/AES67 Project/driver/build/CMakeFiles/rebuild_cache.dir
+/Users/fredparsons/Documents/Side Projects/AES67 Project/driver/build/CMakeFiles/list_install_components.dir
+/Users/fredparsons/Documents/Side Projects/AES67 Project/driver/build/CMakeFiles/install.dir
+/Users/fredparsons/Documents/Side Projects/AES67 Project/driver/build/CMakeFiles/install/local.dir
+/Users/fredparsons/Documents/Side Projects/AES67 Project/driver/build/CMakeFiles/install/strip.dir

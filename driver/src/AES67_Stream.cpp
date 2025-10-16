@@ -4,6 +4,7 @@
 #include "AES67_Stream.h"
 #include "AES67_EngineInterface.h"
 #include <cstring>
+#include <vector>
 
 namespace AES67 {
 
@@ -53,9 +54,9 @@ void Stream::ReadFromEngine(void* buffer, UInt32 frames) {
         auto* ring = ringBuffers_[streamIdx];
         if (!ring) continue;
         
-        // Temporary buffer for this stream's channels
-        int32_t temp[kChannelsPerStream * frames];
-        size_t framesRead = ring->Read(temp, frames);
+        // Temporary buffer for this stream's channels (max 64 frames * 8 channels)
+        std::vector<int32_t> temp(kChannelsPerStream * frames);
+        size_t framesRead = ring->Read(temp.data(), frames);
         
         // Deinterleave into main buffer
         for (size_t f = 0; f < framesRead; ++f) {
@@ -85,8 +86,8 @@ void Stream::WriteToEngine(const void* buffer, UInt32 frames) {
         auto* ring = ringBuffers_[streamIdx];
         if (!ring) continue;
         
-        // Temporary buffer for this stream's channels
-        int32_t temp[kChannelsPerStream * frames];
+        // Temporary buffer for this stream's channels (max 64 frames * 8 channels)
+        std::vector<int32_t> temp(kChannelsPerStream * frames);
         
         // Interleave from main buffer
         for (uint32_t f = 0; f < frames; ++f) {
@@ -96,7 +97,7 @@ void Stream::WriteToEngine(const void* buffer, UInt32 frames) {
             }
         }
         
-        ring->Write(temp, frames);
+        ring->Write(temp.data(), frames);
     }
 }
 

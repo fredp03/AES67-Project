@@ -137,11 +137,11 @@ inline constexpr uint32_t BytesToFrames(uint32_t bytes, uint32_t channels) {
 enum class Error : OSStatus {
     None = 0,
     InvalidFormat = 'fmt?',
-    InvalidOperation = 'op??',
+    InvalidOperation = 'oper',
     DeviceBusy = 'busy',
     NoMemory = 'mem?',
     EngineFailure = 'eng?',
-    PTpNotLocked = 'ptp?'
+    PTPNotLocked = 'ptp?'
 };
 
 inline OSStatus ToOSStatus(Error err) {

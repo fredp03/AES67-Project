@@ -6,6 +6,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <cstring>
 
 namespace AES67 {
 
@@ -63,6 +64,7 @@ bool NetworkEngine::Start() {
     for (uint32_t i = 0; i < 8; ++i) {
         rxThreads_[i] = std::thread(&NetworkEngine::RTPReceiveThread, this, i);
         txThreads_[i] = std::thread(&NetworkEngine::RTPTransmitThread, this, i);
+        playoutThreads_[i] = std::thread(&NetworkEngine::JitterBufferPlayoutThread, this, i);
     }
     
     // Start SAP announcements
@@ -103,6 +105,12 @@ void NetworkEngine::Stop() {
     }
     
     for (auto& thread : txThreads_) {
+        if (thread.joinable()) {
+            thread.join();
+        }
+    }
+    
+    for (auto& thread : playoutThreads_) {
         if (thread.joinable()) {
             thread.join();
         }
@@ -165,6 +173,20 @@ void NetworkEngine::RTPReceiveThread(uint32_t streamIdx) {
     const int sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock < 0) return;
     
+    // Set receive buffer size for low latency
+    int recvBufSize = 256 * 1024; // 256KB
+    setsockopt(sock, SOL_SOCKET, SO_RCVBUF, &recvBufSize, sizeof(recvBufSize));
+    
+    // Set socket priority for real-time audio (SO_PRIORITY is Linux-specific)
+    #ifdef __linux__
+    int priority = 6; // Real-time priority
+    setsockopt(sock, SOL_SOCKET, SO_PRIORITY, &priority, sizeof(priority));
+    #endif
+    
+    // Set DSCP for QoS (EF = 46 for expedited forwarding)
+    int dscp = 46 << 2; // DSCP is in top 6 bits of TOS byte
+    setsockopt(sock, IPPROTO_IP, IP_TOS, &dscp, sizeof(dscp));
+    
     // Bind to port 5004 (TODO: unique port per stream)
     sockaddr_in addr{};
     addr.sin_family = AF_INET;
@@ -184,30 +206,81 @@ void NetworkEngine::RTPReceiveThread(uint32_t streamIdx) {
     setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
     
     uint8_t packetBuf[1500];
-    int32_t sampleBuf[8 * 64]; // Max 64 frames @ 8 channels
     
     while (running_) {
         const ssize_t bytes = recv(sock, packetBuf, sizeof(packetBuf), 0);
         if (bytes <= 0) continue;
         
-        // Depacketize
+        // Depacketize into temporary buffer
+        int32_t sampleBuf[8 * 64]; // Max 64 frames @ 8 channels
         const uint32_t frames = rxDepacketizers_[streamIdx]->ParsePacket(
             packetBuf, bytes, sampleBuf);
         
         if (frames > 0) {
-            // TODO: Insert into jitter buffer, then write to ring
-            // For now, write directly to ring
-            inputRings_[streamIdx]->Write(sampleBuf, frames);
+            // Get current PTP time and RTP timestamp
+            const uint64_t arrivalTime = ptpClient_->GetPTPTimeNs();
+            const uint32_t rtpTimestamp = rxDepacketizers_[streamIdx]->GetLastTimestamp();
+            
+            // Insert into jitter buffer (buffer takes ownership via copy)
+            rxJitterBuffers_[streamIdx]->Insert(rtpTimestamp, arrivalTime, 
+                                                 sampleBuf, frames);
         }
     }
     
     close(sock);
 }
 
+void NetworkEngine::JitterBufferPlayoutThread(uint32_t streamIdx) {
+    // Buffer for playout
+    int32_t playoutBuf[8 * 64]; // Max 64 frames @ 8 channels
+    
+    while (running_) {
+        // Get current PTP time
+        const uint64_t ptpTimeNs = ptpClient_->GetPTPTimeNs();
+        
+        // Try to get next packet for playout
+        const auto* packet = rxJitterBuffers_[streamIdx]->GetNextPacket(ptpTimeNs);
+        
+        if (packet) {
+            // Copy samples to playout buffer
+            const size_t sampleCount = packet->frameCount * 8; // 8 channels per stream
+            std::memcpy(playoutBuf, packet->samples, sampleCount * sizeof(int32_t));
+            
+            // Write to ring buffer for driver to consume
+            inputRings_[streamIdx]->Write(playoutBuf, packet->frameCount);
+            
+            // Release packet back to jitter buffer
+            rxJitterBuffers_[streamIdx]->ReleasePacket(packet);
+        } else {
+            // Underrun - write silence
+            const uint32_t silenceFrames = 6; // 125µs @ 48kHz
+            std::memset(playoutBuf, 0, silenceFrames * 8 * sizeof(int32_t));
+            inputRings_[streamIdx]->Write(playoutBuf, silenceFrames);
+        }
+        
+        // Sleep for packet time (match config_.packetTimeUs)
+        usleep(config_.packetTimeUs);
+    }
+}
+
 void NetworkEngine::RTPTransmitThread(uint32_t streamIdx) {
     // Create UDP socket
     const int sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock < 0) return;
+    
+    // Set send buffer size for low latency
+    int sendBufSize = 256 * 1024; // 256KB
+    setsockopt(sock, SOL_SOCKET, SO_SNDBUF, &sendBufSize, sizeof(sendBufSize));
+    
+    // Set socket priority for real-time audio (SO_PRIORITY is Linux-specific)
+    #ifdef __linux__
+    int priority = 6; // Real-time priority
+    setsockopt(sock, SOL_SOCKET, SO_PRIORITY, &priority, sizeof(priority));
+    #endif
+    
+    // Set DSCP for QoS (EF = 46 for expedited forwarding)
+    int dscp = 46 << 2; // DSCP is in top 6 bits of TOS byte
+    setsockopt(sock, IPPROTO_IP, IP_TOS, &dscp, sizeof(dscp));
     
     // Set multicast TTL
     int ttl = 32;

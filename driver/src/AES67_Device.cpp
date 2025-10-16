@@ -195,7 +195,6 @@ bool Device::HasProperty(const AudioObjectPropertyAddress* address) const {
         case kAudioDevicePropertyStreams:
         case kAudioDevicePropertyNominalSampleRate:
         case kAudioDevicePropertyAvailableNominalSampleRates:
-        case kAudioDevicePropertyIsRunning:
         case kAudioDevicePropertyLatency:
         case kAudioDevicePropertySafetyOffset:
         case kAudioDevicePropertyClockDomain:
@@ -231,10 +230,6 @@ OSStatus Device::GetPropertyDataSize(
             
         case kAudioDevicePropertyNominalSampleRate:
             *outDataSize = sizeof(Float64);
-            return kAudioHardwareNoError;
-            
-        case kAudioDevicePropertyIsRunning:
-            *outDataSize = sizeof(UInt32);
             return kAudioHardwareNoError;
             
         case kAudioObjectPropertyName:
@@ -278,14 +273,6 @@ OSStatus Device::GetPropertyData(
             if (inDataSize >= sizeof(Float64)) {
                 *static_cast<Float64*>(outData) = kSampleRate;
                 *outDataSize = sizeof(Float64);
-                return kAudioHardwareNoError;
-            }
-            break;
-            
-        case kAudioDevicePropertyIsRunning:
-            if (inDataSize >= sizeof(UInt32)) {
-                *static_cast<UInt32*>(outData) = state_.isRunning ? 1 : 0;
-                *outDataSize = sizeof(UInt32);
                 return kAudioHardwareNoError;
             }
             break;
