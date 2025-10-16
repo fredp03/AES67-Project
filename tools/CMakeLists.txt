@@ -17,9 +17,19 @@ target_include_directories(aes67-list PRIVATE
     ${CMAKE_SOURCE_DIR}/../driver/include)
 target_link_libraries(aes67-list aes67_engine)
 
-# TODO: Implement other CLI tools
-# - aes67-subscribe: Subscribe to a stream
-# - aes67-stream: Send test audio stream
-# - aes67-ptp-status: Show PTP synchronization status
+# aes67-subscribe: Subscribe to and monitor a specific stream
+add_executable(aes67-subscribe aes67-subscribe.cpp)
+target_include_directories(aes67-subscribe PRIVATE 
+    ${CMAKE_SOURCE_DIR}/../engine/include
+    ${CMAKE_SOURCE_DIR}/../driver/include)
+target_link_libraries(aes67-subscribe aes67_engine)
 
-message(STATUS "Built aes67-list tool")
+# aes67-stream: Transmit audio files as AES67 streams
+add_executable(aes67-stream aes67-stream.cpp)
+target_include_directories(aes67-stream PRIVATE 
+    ${CMAKE_SOURCE_DIR}/../engine/include
+    ${CMAKE_SOURCE_DIR}/../driver/include)
+target_link_libraries(aes67-stream aes67_engine)
+
+message(STATUS "Built aes67-list, aes67-subscribe, aes67-stream tools")
+

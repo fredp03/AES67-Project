@@ -129,6 +129,32 @@ aes67-list/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-list.dir/build.make CMakeFiles/aes67-list.dir/build
 .PHONY : aes67-list/fast
 
+#=============================================================================
+# Target rules for targets named aes67-subscribe
+
+# Build rule for target.
+aes67-subscribe: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 aes67-subscribe
+.PHONY : aes67-subscribe
+
+# fast build rule for target.
+aes67-subscribe/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-subscribe.dir/build.make CMakeFiles/aes67-subscribe.dir/build
+.PHONY : aes67-subscribe/fast
+
+#=============================================================================
+# Target rules for targets named aes67-stream
+
+# Build rule for target.
+aes67-stream: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 aes67-stream
+.PHONY : aes67-stream
+
+# fast build rule for target.
+aes67-stream/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-stream.dir/build.make CMakeFiles/aes67-stream.dir/build
+.PHONY : aes67-stream/fast
+
 aes67-list.o: aes67-list.cpp.o
 .PHONY : aes67-list.o
 
@@ -153,6 +179,54 @@ aes67-list.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-list.dir/build.make CMakeFiles/aes67-list.dir/aes67-list.cpp.s
 .PHONY : aes67-list.cpp.s
 
+aes67-stream.o: aes67-stream.cpp.o
+.PHONY : aes67-stream.o
+
+# target to build an object file
+aes67-stream.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-stream.dir/build.make CMakeFiles/aes67-stream.dir/aes67-stream.cpp.o
+.PHONY : aes67-stream.cpp.o
+
+aes67-stream.i: aes67-stream.cpp.i
+.PHONY : aes67-stream.i
+
+# target to preprocess a source file
+aes67-stream.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-stream.dir/build.make CMakeFiles/aes67-stream.dir/aes67-stream.cpp.i
+.PHONY : aes67-stream.cpp.i
+
+aes67-stream.s: aes67-stream.cpp.s
+.PHONY : aes67-stream.s
+
+# target to generate assembly for a file
+aes67-stream.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-stream.dir/build.make CMakeFiles/aes67-stream.dir/aes67-stream.cpp.s
+.PHONY : aes67-stream.cpp.s
+
+aes67-subscribe.o: aes67-subscribe.cpp.o
+.PHONY : aes67-subscribe.o
+
+# target to build an object file
+aes67-subscribe.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-subscribe.dir/build.make CMakeFiles/aes67-subscribe.dir/aes67-subscribe.cpp.o
+.PHONY : aes67-subscribe.cpp.o
+
+aes67-subscribe.i: aes67-subscribe.cpp.i
+.PHONY : aes67-subscribe.i
+
+# target to preprocess a source file
+aes67-subscribe.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-subscribe.dir/build.make CMakeFiles/aes67-subscribe.dir/aes67-subscribe.cpp.i
+.PHONY : aes67-subscribe.cpp.i
+
+aes67-subscribe.s: aes67-subscribe.cpp.s
+.PHONY : aes67-subscribe.s
+
+# target to generate assembly for a file
+aes67-subscribe.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-subscribe.dir/build.make CMakeFiles/aes67-subscribe.dir/aes67-subscribe.cpp.s
+.PHONY : aes67-subscribe.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +236,17 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... aes67-list"
+	@echo "... aes67-stream"
+	@echo "... aes67-subscribe"
 	@echo "... aes67-list.o"
 	@echo "... aes67-list.i"
 	@echo "... aes67-list.s"
+	@echo "... aes67-stream.o"
+	@echo "... aes67-stream.i"
+	@echo "... aes67-stream.s"
+	@echo "... aes67-subscribe.o"
+	@echo "... aes67-subscribe.i"
+	@echo "... aes67-subscribe.s"
 .PHONY : help
 
 

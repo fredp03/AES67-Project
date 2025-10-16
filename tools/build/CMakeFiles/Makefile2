@@ -64,10 +64,14 @@ CMAKE_BINARY_DIR = "/Users/fredparsons/Documents/Side Projects/AES67 Project/too
 
 # The main recursive "all" target.
 all: CMakeFiles/aes67-list.dir/all
+all: CMakeFiles/aes67-subscribe.dir/all
+all: CMakeFiles/aes67-stream.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
 codegen: CMakeFiles/aes67-list.dir/codegen
+codegen: CMakeFiles/aes67-subscribe.dir/codegen
+codegen: CMakeFiles/aes67-stream.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -76,6 +80,8 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/aes67-list.dir/clean
+clean: CMakeFiles/aes67-subscribe.dir/clean
+clean: CMakeFiles/aes67-stream.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -109,6 +115,70 @@ CMakeFiles/aes67-list.dir/codegen:
 CMakeFiles/aes67-list.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-list.dir/build.make CMakeFiles/aes67-list.dir/clean
 .PHONY : CMakeFiles/aes67-list.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/aes67-subscribe.dir
+
+# All Build rule for target.
+CMakeFiles/aes67-subscribe.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-subscribe.dir/build.make CMakeFiles/aes67-subscribe.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-subscribe.dir/build.make CMakeFiles/aes67-subscribe.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" --progress-num=5,6 "Built target aes67-subscribe"
+.PHONY : CMakeFiles/aes67-subscribe.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/aes67-subscribe.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/aes67-subscribe.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" 0
+.PHONY : CMakeFiles/aes67-subscribe.dir/rule
+
+# Convenience name for target.
+aes67-subscribe: CMakeFiles/aes67-subscribe.dir/rule
+.PHONY : aes67-subscribe
+
+# codegen rule for target.
+CMakeFiles/aes67-subscribe.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-subscribe.dir/build.make CMakeFiles/aes67-subscribe.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" --progress-num=5,6 "Finished codegen for target aes67-subscribe"
+.PHONY : CMakeFiles/aes67-subscribe.dir/codegen
+
+# clean rule for target.
+CMakeFiles/aes67-subscribe.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-subscribe.dir/build.make CMakeFiles/aes67-subscribe.dir/clean
+.PHONY : CMakeFiles/aes67-subscribe.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/aes67-stream.dir
+
+# All Build rule for target.
+CMakeFiles/aes67-stream.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-stream.dir/build.make CMakeFiles/aes67-stream.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-stream.dir/build.make CMakeFiles/aes67-stream.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" --progress-num=3,4 "Built target aes67-stream"
+.PHONY : CMakeFiles/aes67-stream.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/aes67-stream.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/aes67-stream.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" 0
+.PHONY : CMakeFiles/aes67-stream.dir/rule
+
+# Convenience name for target.
+aes67-stream: CMakeFiles/aes67-stream.dir/rule
+.PHONY : aes67-stream
+
+# codegen rule for target.
+CMakeFiles/aes67-stream.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-stream.dir/build.make CMakeFiles/aes67-stream.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/Users/fredparsons/Documents/Side Projects/AES67 Project/tools/build/CMakeFiles" --progress-num=3,4 "Finished codegen for target aes67-stream"
+.PHONY : CMakeFiles/aes67-stream.dir/codegen
+
+# clean rule for target.
+CMakeFiles/aes67-stream.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/aes67-stream.dir/build.make CMakeFiles/aes67-stream.dir/clean
+.PHONY : CMakeFiles/aes67-stream.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
