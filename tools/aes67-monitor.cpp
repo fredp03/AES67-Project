@@ -53,6 +53,9 @@ float CalculateRMS(const int32_t* samples, size_t count) {
 
 // Generate JSON status for web client
 std::string GenerateStatusJSON(NetworkEngine& engine, uint32_t numChannels) {
+    static int callCount = 0;
+    callCount++;
+    
     std::stringstream json;
     json << std::fixed << std::setprecision(2);
     
@@ -66,30 +69,43 @@ std::string GenerateStatusJSON(NetworkEngine& engine, uint32_t numChannels) {
     // Get audio levels for each channel
     AudioRingBuffer* ringBuffer = engine.GetInputRingBuffer(0);
     if (ringBuffer) {
-        std::vector<int32_t> samples(512); // Read 512 samples per channel
+        size_t available = ringBuffer->ReadAvailable();
+        
+        if (callCount % 10 == 0) {
+            std::cerr << "GenerateStatusJSON: Ring buffer has " << available 
+                      << " frames available\n";
+        }
+        
+        // Read up to 512 frames of interleaved audio
+        const size_t framesToRead = std::min(available, size_t(512));
+        std::vector<int32_t> interleaved(framesToRead * numChannels);
+        
+        if (framesToRead > 0) {
+            ringBuffer->Read(interleaved.data(), framesToRead);
+        }
         
         for (uint32_t ch = 0; ch < numChannels; ++ch) {
-            // Read latest samples for this channel
-            size_t available = ringBuffer->ReadAvailable();
-            size_t toRead = std::min(available, samples.size());
-            
-            if (toRead > 0) {
-                // Read interleaved samples and extract this channel
-                std::vector<int32_t> interleaved(toRead * numChannels);
-                ringBuffer->Read(interleaved.data(), toRead);
-                
-                // Extract channel
-                for (size_t i = 0; i < toRead; ++i) {
-                    samples[i] = interleaved[i * numChannels + ch];
-                }
+            // Extract this channel's samples from interleaved data
+            std::vector<int32_t> channelSamples(framesToRead);
+            for (size_t i = 0; i < framesToRead; ++i) {
+                channelSamples[i] = interleaved[i * numChannels + ch];
             }
             
-            float level = CalculateRMS(samples.data(), toRead);
+            float level = CalculateRMS(channelSamples.data(), framesToRead);
             
             json << "    {\"channel\": " << ch 
                  << ", \"level\": " << level 
                  << ", \"peak\": " << level << "}";
             
+            if (ch < numChannels - 1) json << ",";
+            json << "\n";
+        }
+    } else {
+        // No ring buffer available
+        for (uint32_t ch = 0; ch < numChannels; ++ch) {
+            json << "    {\"channel\": " << ch 
+                 << ", \"level\": -96.0"
+                 << ", \"peak\": -96.0}";
             if (ch < numChannels - 1) json << ",";
             json << "\n";
         }

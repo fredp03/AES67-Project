@@ -1,0 +1,20 @@
+{
+  "interface": "en0",
+  "inputs": [
+    {
+      "id": 0,
+      "enabled": true,
+      "multicast_address": "239.69.83.1",
+      "port": 5004,
+      "channels": 8,
+      "sample_rate": 48000,
+      "format": "L24",
+      "name": "Ableton Live Output"
+    }
+  ],
+  "outputs": [],
+  "ptp": {
+    "enabled": true,
+    "domain": 0
+  }
+}

@@ -7,6 +7,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstring>
+#include <iostream>
+#include <time.h>
 
 namespace AES67 {
 
@@ -60,15 +62,35 @@ bool NetworkEngine::Start() {
     
     running_ = true;
     
+    std::cout << "NetworkEngine::Start() - Starting threads..." << std::endl;
+    fprintf(stderr, "NetworkEngine::Start() - Starting threads...\n");
+    fflush(stderr);
+    
     // Start SAP discovery listener
     sapDiscoveryThread_ = std::thread(&NetworkEngine::SAPDiscoveryThread, this);
+    fprintf(stderr, "NetworkEngine::Start() - SAP thread started\n");
+    fflush(stderr);
     
-    // Start RTP threads (one per stream)
-    for (uint32_t i = 0; i < 8; ++i) {
+    // Start RTP threads (only stream 0 for receive - monitoring single stream at 239.69.2.1)
+    // TODO: Support multiple streams with different ports or shared socket
+    for (uint32_t i = 0; i < 1; ++i) {  // Only start stream 0 receiver
+        fprintf(stderr, "NetworkEngine::Start() - Starting RX thread %u\n", i);
+        fflush(stderr);
         rxThreads_[i] = std::thread(&NetworkEngine::RTPReceiveThread, this, i);
-        txThreads_[i] = std::thread(&NetworkEngine::RTPTransmitThread, this, i);
+        
+        fprintf(stderr, "NetworkEngine::Start() - Starting playout thread %u\n", i);
+        fflush(stderr);
         playoutThreads_[i] = std::thread(&NetworkEngine::JitterBufferPlayoutThread, this, i);
+        fprintf(stderr, "NetworkEngine::Start() - Playout thread %u created\n", i);
+        fflush(stderr);
     }
+    
+    // Start TX threads for all streams (if needed for sending)
+    for (uint32_t i = 0; i < 8; ++i) {
+        txThreads_[i] = std::thread(&NetworkEngine::RTPTransmitThread, this, i);
+    }
+    fprintf(stderr, "NetworkEngine::Start() - All threads started\n");
+    fflush(stderr);
     
     // Start SAP announcements
     std::vector<StreamDescription> streams;
@@ -200,9 +222,25 @@ bool NetworkEngine::GetDiscoveredStream(const std::string& name, SDPSession& out
 }
 
 void NetworkEngine::RTPReceiveThread(uint32_t streamIdx) {
+    fprintf(stderr, "RTPReceiveThread[%u]: Starting...\n", streamIdx);
+    fflush(stderr);
+    
     // Create UDP socket
     const int sock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sock < 0) return;
+    if (sock < 0) {
+        fprintf(stderr, "RTPReceiveThread[%u]: Failed to create socket\n", streamIdx);
+        fflush(stderr);
+        return;
+    }
+    fprintf(stderr, "RTPReceiveThread[%u]: Socket created\n", streamIdx);
+    fflush(stderr);
+    
+    // Set socket options for multicast
+    int reuse = 1;
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
+    #ifdef SO_REUSEPORT
+    setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, &reuse, sizeof(reuse));
+    #endif
     
     // Set receive buffer size for low latency
     int recvBufSize = 256 * 1024; // 256KB
@@ -218,13 +256,15 @@ void NetworkEngine::RTPReceiveThread(uint32_t streamIdx) {
     int dscp = 46 << 2; // DSCP is in top 6 bits of TOS byte
     setsockopt(sock, IPPROTO_IP, IP_TOS, &dscp, sizeof(dscp));
     
-    // Bind to port 5004 (TODO: unique port per stream)
+    // Bind to port 5006 (avoiding macOS MIDIServer on ports 5004 and 5005)
+    // Bind to INADDR_ANY so all 8 receive threads can share the port
     sockaddr_in addr{};
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = INADDR_ANY;
-    addr.sin_port = htons(5004);
+    addr.sin_port = htons(5006);
     
     if (bind(sock, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) < 0) {
+        perror("RTPReceiveThread bind failed");
         close(sock);
         return;
     }
@@ -234,13 +274,31 @@ void NetworkEngine::RTPReceiveThread(uint32_t streamIdx) {
     const std::string mcastAddr = "239.69.2." + std::to_string(streamIdx + 1);
     inet_pton(AF_INET, mcastAddr.c_str(), &mreq.imr_multiaddr);
     mreq.imr_interface.s_addr = INADDR_ANY;
-    setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
+    
+    if (setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq)) < 0) {
+        char error_msg[256];
+        snprintf(error_msg, sizeof(error_msg), "RTPReceiveThread: Failed to join multicast group %s", mcastAddr.c_str());
+        perror(error_msg);
+        close(sock);
+        return;
+    }
+    
+    fprintf(stderr, "RTPReceiveThread[%u]: Joined multicast group %s on port 5006\n", streamIdx, mcastAddr.c_str());
+    fflush(stderr);
     
     uint8_t packetBuf[1500];
+    uint32_t packetCount = 0;
     
     while (running_) {
         const ssize_t bytes = recv(sock, packetBuf, sizeof(packetBuf), 0);
         if (bytes <= 0) continue;
+        
+        packetCount++;
+        if (packetCount % 1000 == 0) {
+            fprintf(stderr, "RTPReceiveThread[%u]: Received %u packets (%zd bytes last)\n", 
+                    streamIdx, packetCount, bytes);
+            fflush(stderr);
+        }
         
         // Depacketize into temporary buffer
         int32_t sampleBuf[8 * 64]; // Max 64 frames @ 8 channels
@@ -262,12 +320,25 @@ void NetworkEngine::RTPReceiveThread(uint32_t streamIdx) {
 }
 
 void NetworkEngine::JitterBufferPlayoutThread(uint32_t streamIdx) {
+    std::cout << "JitterBufferPlayoutThread[" << streamIdx << "]: Starting..." << std::endl;
+    fprintf(stderr, "JitterBufferPlayoutThread[%u]: Starting...\n", streamIdx);
+    fflush(stderr);
+    
     // Buffer for playout
     int32_t playoutBuf[8 * 64]; // Max 64 frames @ 8 channels
+    uint32_t writeCount = 0;
+    
+    std::cout << "JitterBufferPlayoutThread[" << streamIdx << "]: Entering main loop, running_=" << running_ << std::endl;
     
     while (running_) {
-        // Get current PTP time
-        const uint64_t ptpTimeNs = ptpClient_->GetPTPTimeNs();
+        // Get current PTP time (or use system time if PTP not available)
+        uint64_t ptpTimeNs = ptpClient_->GetPTPTimeNs();
+        if (ptpTimeNs == 0) {
+            // PTP not locked - use system time as fallback
+            struct timespec ts;
+            clock_gettime(CLOCK_REALTIME, &ts);
+            ptpTimeNs = (uint64_t)ts.tv_sec * 1000000000ULL + ts.tv_nsec;
+        }
         
         // Try to get next packet for playout
         const auto* packet = rxJitterBuffers_[streamIdx]->GetNextPacket(ptpTimeNs);
@@ -279,6 +350,13 @@ void NetworkEngine::JitterBufferPlayoutThread(uint32_t streamIdx) {
             
             // Write to ring buffer for driver to consume
             inputRings_[streamIdx]->Write(playoutBuf, packet->frameCount);
+            
+            writeCount++;
+            if (writeCount % 1000 == 0) {
+                fprintf(stderr, "JitterBufferPlayoutThread[%u]: Wrote %u packets to ring buffer (%u frames last)\n",
+                        streamIdx, writeCount, packet->frameCount);
+                fflush(stderr);
+            }
             
             // Release packet back to jitter buffer
             rxJitterBuffers_[streamIdx]->ReleasePacket(packet);
