@@ -69,15 +69,14 @@ std::string GenerateStatusJSON(NetworkEngine& engine, uint32_t numChannels) {
     // Get audio levels for each channel
     AudioRingBuffer* ringBuffer = engine.GetInputRingBuffer(0);
     if (ringBuffer) {
-        size_t available = ringBuffer->ReadAvailable();
-        
+        size_t availableSamples = ringBuffer->ReadAvailable();
         if (callCount % 10 == 0) {
-            std::cerr << "GenerateStatusJSON: Ring buffer has " << available 
-                      << " frames available\n";
+            std::cerr << "GenerateStatusJSON: Ring buffer has " << availableSamples 
+                      << " samples available\n";
         }
-        
-        // Read up to 512 frames of interleaved audio
-        const size_t framesToRead = std::min(available, size_t(512));
+
+        size_t framesAvailable = availableSamples / numChannels;
+        const size_t framesToRead = std::min(framesAvailable, size_t(512));
         std::vector<int32_t> interleaved(framesToRead * numChannels);
         
         if (framesToRead > 0) {
