@@ -346,7 +346,7 @@ void NetworkEngine::JitterBufferPlayoutThread(uint32_t streamIdx) {
         if (packet) {
             // Copy samples to playout buffer
             const size_t sampleCount = packet->frameCount * 8; // 8 channels per stream
-            std::memcpy(playoutBuf, packet->samples, sampleCount * sizeof(int32_t));
+            std::memcpy(playoutBuf, packet->samples.data(), sampleCount * sizeof(int32_t));
             
             // Write to ring buffer for driver to consume (samples not frames)
             inputRings_[streamIdx]->Write(playoutBuf, sampleCount);

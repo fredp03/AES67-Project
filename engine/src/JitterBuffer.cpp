@@ -29,16 +29,13 @@ void JitterBuffer::Insert(uint32_t timestamp, uint64_t arrivalTime,
         return; // Drop packet
     }
     
-    // Allocate and copy samples
-    int32_t* sampleCopy = new int32_t[frameCount * 8]; // Assume 8 channels max
-    std::memcpy(sampleCopy, samples, frameCount * 8 * sizeof(int32_t));
-    
     // Create packet entry
     JitterBufferPacket packet;
     packet.timestamp = timestamp;
     packet.arrivalTime = arrivalTime;
     packet.frameCount = frameCount;
-    packet.samples = sampleCopy;
+    packet.samples.resize(frameCount * 8);
+    std::memcpy(packet.samples.data(), samples, frameCount * 8 * sizeof(int32_t));
     
     // Insert in timestamp order
     auto it = queue_.begin();
@@ -82,14 +79,13 @@ void JitterBuffer::ReleasePacket(const JitterBufferPacket* packet) {
     
     // Should be the front packet
     if (&queue_.front() == packet) {
-        delete[] packet->samples;
         queue_.pop_front();
     }
 }
 
 void JitterBuffer::Reset() {
     for (auto& packet : queue_) {
-        delete[] packet.samples;
+        packet.samples.clear();
     }
     queue_.clear();
     underruns_ = 0;

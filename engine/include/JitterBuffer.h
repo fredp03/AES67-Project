@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <deque>
+#include <vector>
 
 namespace AES67 {
 
@@ -12,7 +13,7 @@ struct JitterBufferPacket {
     uint32_t timestamp;     // RTP timestamp
     uint64_t arrivalTime;   // PTP nanoseconds
     uint32_t frameCount;
-    int32_t* samples;       // Owned by buffer
+    std::vector<int32_t> samples;
 };
 
 class JitterBuffer {
