@@ -15,8 +15,8 @@ namespace AES67 {
 NetworkEngine::NetworkEngine(const char* configPath) {
     (void)configPath; // TODO: Load from JSON file
     
-    // Create PTP client
-    ptpClient_ = std::make_unique<PTPClient>(config_.ptpDomain);
+    // Create PTP clock (operate as grandmaster)
+    ptpClient_ = std::make_unique<PTPClient>(config_.ptpDomain, PTPClient::Mode::Master);
     
     // Create SAP announcer
     sapAnnouncer_ = std::make_unique<SAPAnnouncer>();
@@ -55,8 +55,8 @@ NetworkEngine::~NetworkEngine() {
 bool NetworkEngine::Start() {
     if (running_) return true;
     
-    // Start PTP client
-    if (!ptpClient_->Start(config_.interface.c_str())) {
+    // Start PTP clock as network grandmaster
+    if (!ptpClient_->Start(config_.interface.c_str(), PTPClient::Mode::Master)) {
         return false;
     }
     

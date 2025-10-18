@@ -34,7 +34,7 @@ A fully-featured, low-latency virtual soundcard implementing AES67 standards for
 │  Network Engine (C++)                                        │
 │  • RTP L24 packetizer (8 streams × 8ch each)                 │
 │  • Adaptive jitter buffer (2-4 packets)                      │
-│  • PTP client (IEEE-1588v2) with affine servo                │
+│  • PTP grandmaster (IEEE-1588v2) broadcasting Sync/Announce  │
 │  • SAP/SDP announcements                                     │
 │  • QoS/DSCP marking                                          │
 └────────────────┬────────────────────────────────────────────┘
@@ -148,10 +148,12 @@ Switch profiles in the menu bar app or via CLI:
 
 AES67 requires PTP (IEEE 1588-2008) for sample-accurate timing:
 
+- **Built-in Grandmaster**: Starting the network engine now turns the Mac into a PTPv2 master, multicasting Sync and Announce traffic on the selected interface.
+- **Privileges**: Binding to the well-known PTP ports (319/320) demands administrator rights. Run `aes67-monitor`, `aes67-stream`, or any tool that starts the engine with `sudo` (the helper scripts prompt automatically).
 - **Domain**: Configurable (default: 0)
 - **Announce Interval**: 1/sec (AES67 default)
-- **Sync Interval**: 1/sec or faster
-- **Servo**: PI controller with adaptive gain
+- **Sync Interval**: 8/sec (125 ms)
+- **Servo**: Master uses system clock; slave mode still available for interop work
 - **Lock Threshold**: < 500 ns offset, < 100 ns jitter
 
 Monitor PTP status:

@@ -167,6 +167,7 @@ int main(int argc, char* argv[]) {
     
     // Create network engine (use default config)
     NetworkEngine engine("../configs/engine.json");
+    engine.SetNetworkInterface(interface);
     
     // Start engine
     std::cout << "Starting network engine..." << std::endl;

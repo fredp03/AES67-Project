@@ -14,6 +14,7 @@
 #include <atomic>
 #include <map>
 #include <mutex>
+#include <string>
 
 namespace AES67 {
 
@@ -35,6 +36,9 @@ public:
     AudioRingBuffer* GetInputRingBuffer(uint32_t streamIdx) override;
     AudioRingBuffer* GetOutputRingBuffer(uint32_t streamIdx) override;
     void NotifyIOCycle(uint64_t hostTime, uint64_t sampleTime) override;
+    
+    // Configuration helpers
+    void SetNetworkInterface(const std::string& interfaceName) { config_.interface = interfaceName; }
     
     // Stream discovery API
     std::vector<std::string> GetDiscoveredStreamNames() const;
