@@ -348,8 +348,8 @@ void NetworkEngine::JitterBufferPlayoutThread(uint32_t streamIdx) {
             const size_t sampleCount = packet->frameCount * 8; // 8 channels per stream
             std::memcpy(playoutBuf, packet->samples, sampleCount * sizeof(int32_t));
             
-            // Write to ring buffer for driver to consume
-            inputRings_[streamIdx]->Write(playoutBuf, packet->frameCount);
+            // Write to ring buffer for driver to consume (samples not frames)
+            inputRings_[streamIdx]->Write(playoutBuf, sampleCount);
             
             writeCount++;
             if (writeCount % 1000 == 0) {
@@ -363,8 +363,9 @@ void NetworkEngine::JitterBufferPlayoutThread(uint32_t streamIdx) {
         } else {
             // Underrun - write silence
             const uint32_t silenceFrames = 6; // 125µs @ 48kHz
-            std::memset(playoutBuf, 0, silenceFrames * 8 * sizeof(int32_t));
-            inputRings_[streamIdx]->Write(playoutBuf, silenceFrames);
+            const size_t silenceSamples = silenceFrames * 8;
+            std::memset(playoutBuf, 0, silenceSamples * sizeof(int32_t));
+            inputRings_[streamIdx]->Write(playoutBuf, silenceSamples);
         }
         
         // Sleep for packet time (match config_.packetTimeUs)

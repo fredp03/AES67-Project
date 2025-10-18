@@ -81,7 +81,7 @@ std::string GenerateStatusJSON(NetworkEngine& engine, uint32_t numChannels) {
         std::vector<int32_t> interleaved(framesToRead * numChannels);
         
         if (framesToRead > 0) {
-            ringBuffer->Read(interleaved.data(), framesToRead);
+            ringBuffer->Read(interleaved.data(), framesToRead * numChannels);
         }
         
         for (uint32_t ch = 0; ch < numChannels; ++ch) {
